@@ -4,31 +4,39 @@ Hangman
 
 max_attempts = 6
 failed_attempts = 0
-generated_word = "better"
-generated_word_list = list(generated_word)
+answer = "better"
+answer_list = list(answer)
 player_guess = []
+wrong_guesses = []
 
-for letter in generated_word_list:
+for letter in answer_list:
     player_guess.append('_')
 
 while failed_attempts < max_attempts:
     print(f"Attempts remaining {failed_attempts}/{max_attempts}")
     print(' '.join(player_guess))
-    letter = input("Guess a letter: ")
-    count_of_guess = generated_word.count(letter)
-    if count_of_guess == 0:
-        failed_attempts += 1
+    letter = input("Guess a letter: ").lower()
+    matching_letters = answer_list.count(letter)
+
+    if matching_letters == 0:
+        if letter in wrong_guesses:
+            print(f"{letter} has already been guessed and is NOT in the word")
+        else:
+            wrong_guesses.append(letter)
+            failed_attempts += 1
     else:
-        for i in range(0, count_of_guess):
-            first_index_of_guess = generated_word_list.index(letter)
-            player_guess[first_index_of_guess] = letter
-            generated_word_list[first_index_of_guess] = '_'
+        if letter in player_guess:
+            print(f"{letter} has already been guessed and is in the word")
+        else:
+            for index, answer_letter in enumerate(answer_list):
+                if answer_letter == letter:
+                    player_guess[index] = letter
     if player_guess.count('_') == 0:
         break
 
 if failed_attempts == max_attempts:
     print("Ran out of attempts you lose")
-    print(generated_word)
+    print(answer)
     print(''.join(player_guess))
 else:
     print("you guessed the word!")
