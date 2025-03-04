@@ -1,15 +1,19 @@
 """
 Hangman
 """
+import random
+
+word_list = ["aardvark", "baboon", "camel"]
+answer = random.choice(word_list)
 
 max_attempts = 6
 failed_attempts = 0
-answer = "better"
+
 answer_list = list(answer)
 player_guess = []
 wrong_guesses = []
 
-for letter in answer_list:
+for letter in answer:
     player_guess.append('_')
 
 while failed_attempts < max_attempts:
@@ -31,7 +35,7 @@ while failed_attempts < max_attempts:
             for index, answer_letter in enumerate(answer_list):
                 if answer_letter == letter:
                     player_guess[index] = letter
-    if player_guess.count('_') == 0:
+    if "_" not in player_guess:
         break
 
 if failed_attempts == max_attempts:
